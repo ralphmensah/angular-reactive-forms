@@ -21,10 +21,12 @@ export class AppComponent implements OnInit{
   //   })
   // })
 
+  // TODO:create a custom validator do validate telephone numbers
   form = this.builder.group({
     lastName: ['',Validators.required],
     firstName:['', Validators.required],
-    email:['', Validators.required],
+    email:['', [Validators.required, Validators.email]],
+    telephone:['',[Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
     gender:['',Validators.required],
     address: this.builder.group({
       state: [''],
@@ -37,7 +39,7 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // console.log(this.form);
+    console.log(this.form);
   }
 
   get aliases(){
@@ -59,4 +61,8 @@ export class AppComponent implements OnInit{
     this.form.reset();
   }
 
+  get gender(){ return this.form.get('gender') as FormControl}
+  get telephone(){return this.form.get('telephone') as FormControl;}
+
+  get email(){ return this.form.get('email') as FormControl}
 }

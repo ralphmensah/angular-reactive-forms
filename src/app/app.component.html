@@ -1,20 +1,57 @@
 <div class="container">
+  <app-time></app-time>
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>
-    First Name
-    <input type="text" placeholder="Enter First Name" formControlName="firstName">
-  </label>
-  <label>
-    Last Name
-    <input type="text" placeholder="Enter Last Name" formControlName="lastName">
-  </label>
-
-  <label>
-    Email
-    <input type="text" placeholder="Enter Email" formControlName="email">
-  </label>
   
-  <label>
+  <mat-form-field appearance="fill">
+    <mat-label>First Name</mat-label>
+    <input matInput type="text" placeholder="Enter First Name" formControlName="firstName">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Last Name</mat-label>
+    <input matInput type="text" placeholder="Enter Last Name" formControlName="lastName">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label> Email </mat-label>
+    <input matInput type="text" placeholder="Enter Email" formControlName="email">
+    <mat-hint>Example: me@mail.com</mat-hint>
+  </mat-form-field>
+  
+  <div *ngIf="email.invalid && (email.dirty || email.touched)">
+  <small *ngIf="email.errors?.['email']">
+    enter a valid email
+  </small>
+</div>
+
+<mat-form-field appearance="fill">
+  <mat-label>  Tel: </mat-label>
+  <input matInput type="text" placeholder="Enter TelePhone Number" formControlName="telephone">
+</mat-form-field>
+
+  <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
+      <small *ngIf="telephone.errors?.['reqiured']">
+        *telephone is reqiured
+      </small>
+      <small *ngIf="telephone.errors?.['maxlength'] || telephone.errors?.['minlength']">
+        telephone should be 10 digits
+      </small>
+  </div>
+
+  <mat-radio-group>
+    <mat-radio-button id="male" formControlName="gender"  value="Male">
+      Male
+    </mat-radio-button>
+    <mat-radio-button id="female"  value="Female">
+      Female
+    </mat-radio-button>
+    <mat-radio-button id="other"  value="Other">
+      Other
+    </mat-radio-button>
+  </mat-radio-group>
+
+
+  <!-- <label>
     Gender
   </label>
     <input type="radio" id="male" formControlName="gender" value="Male" checked>
@@ -22,18 +59,21 @@
     <input type="radio" id="female"  formControlName="gender" value="Female">
     <label for="female">Female</label>
     <input type="radio" id="other" formControlName="gender"  value="other">
-    <label for="other">Other</label>
+    <label for="other">Other</label> -->
   
     <div formGroupName="address">
       <label>Address</label>
-    <label>
-      State
-      <input type="text" placeholder="Enter State" formControlName="state">
-    </label>
-    <label>
-      City
-      <input type="text" placeholder="Enter City" formControlName="city">
-    </label>
+
+      <mat-form-field appearance="fill">
+        <mat-label>  State </mat-label>
+        <input matInput type="text" placeholder="Enter State" formControlName="state">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>  City </mat-label>
+        <input matInput type="text" placeholder="Enter City" formControlName="city">
+      </mat-form-field>
+
   </div>
   <div  formArrayName="aliases">
 
@@ -41,18 +81,17 @@
     <button type="button" (click)="removeAlias()" [disabled]="aliases.length === 0"> - Remove Alias</button>
 
     <div *ngFor="let alias of aliases.controls; let i = index" >
-      <label>
-        Alias({{i+1}})
-        <input type="text" formControlName={{i}}>
-      </label>
-      
+      <mat-form-field appearance="fill">
+        <mat-label>  Alias({{i+1}}) </mat-label>
+        <input matInput type="text" formControlName={{i}}>
+      </mat-form-field>      
     </div>
 
   </div>
  
 
   <small *ngIf="!form.valid"> *complete the form to enable submit button</small>
-  <button type="submit" [disabled]="!form.valid">Submit</button>
+  <button  mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
   
 </form>
 </div>
@@ -62,6 +101,7 @@
   </p>
   <p> Full Name: {{form.value.firstName}} {{form.value.lastName}}</p>
   <p> Email: {{form.value.email}}</p>
+  <p> Telphone: {{form.value.telephone}}</p>
   <p>Gender: {{form.value.gender}} </p>
   <p>Location: {{form.value.address.city}} , {{form.value.address.state}}</p>
   <div>
